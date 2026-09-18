@@ -280,7 +280,7 @@ def search_knowledge_base(query: str) -> str:
         return f"Error searching knowledge base: {e}"
 
 
-# ── TODO 7 — Loyalty Discount Tool (Code Interpreter) ────────────────────────
+# 7 — Loyalty Discount Tool (Code Interpreter) ────────────────────────
 @tool
 def calculate_loyalty_discount(
     loyalty_points: int,
@@ -301,6 +301,11 @@ def calculate_loyalty_discount(
     Returns:
         Full discount breakdown and final price
     """
+    loyalty_points = int(loyalty_points)
+    order_total = float(order_total)
+    tier = str(tier).strip().capitalize()
+    product_category = str(product_category).strip().lower()
+
     code = f"""
 import json
 
@@ -312,7 +317,7 @@ tier = "{tier}"
 order_total = {order_total}
 product_category = "{product_category}"
 
-tier_rate = tier_rates.get(tier, 0.0)
+tier_rate = tier_rates.get(tier, 0.10)
 earn_rate = earn_rates.get(product_category, 1)
 
 # Points redemption: 100 points = $1. Floor to nearest 500 points.
@@ -370,8 +375,10 @@ print(json.dumps(result))
     except Exception as e:
         logger.warning(f"Code Interpreter execution failed, running fallback: {e}")
         tier_rates = {"Silver": 0.00, "Gold": 0.10, "Platinum": 0.15}
-        tier_rate = tier_rates.get(tier, 0.0)
-        
+        tier_rate = tier_rates.get(tier, 0.10)
+        earn_rates = {"standard": 1, "device": 2, "fresh": 5}
+        earn_rate = earn_rates.get(product_category, 1)
+
         max_points_for_half_order = int((order_total * 0.5) * 100)
         eligible_points = (loyalty_points // 500) * 500
         points_redeemed = min(eligible_points, (max_points_for_half_order // 500) * 500)
@@ -379,8 +386,10 @@ print(json.dumps(result))
         subtotal_after_points = max(0.0, order_total - points_discount)
         tier_discount = round(subtotal_after_points * tier_rate, 2)
         final_total = round(subtotal_after_points - tier_discount, 2)
+        total_savings = round(points_discount + tier_discount, 2)
         remaining_points = loyalty_points - points_redeemed
-        
+        points_earned = int(final_total * earn_rate)
+
         return json.dumps({
             "points_redeemed": points_redeemed,
             "tier_discount_pct": int(tier_rate * 100),
@@ -388,7 +397,8 @@ print(json.dumps(result))
             "remaining_points": remaining_points,
             "points_discount": points_discount,
             "tier_discount": tier_discount,
-            "total_savings": round(points_discount + tier_discount, 2),
+            "total_savings": total_savings,
+            "points_earned": points_earned,
             "fallback": True,
         })
 
