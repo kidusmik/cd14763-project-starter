@@ -348,48 +348,50 @@ result = {{
 print(json.dumps(result))
 """
 
+    def _consume_stream(client):
+            response = client.invoke(
+                "executeCode",
+                {"code": code, "language": "python", "clearContext": True},
+            )
+            # Extract the actual EventStream from the response dictionary
+            stream = response.get("stream", response) if isinstance(response, dict) else response
+
+            chunks = []
+            result_val = None
+
+            for event in stream:
+                if isinstance(event, dict):
+                    if event.get("result") is not None:
+                        result_val = event["result"]
+                    if event.get("stdout"):
+                        chunks.append(str(event["stdout"]))
+                    if "event" in event and isinstance(event["event"], dict):
+                        inner = event["event"]
+                        if inner.get("result") is not None:
+                            result_val = inner["result"]
+                        if inner.get("stdout"):
+                            chunks.append(str(inner["stdout"]))
+                elif isinstance(event, str):
+                    chunks.append(event)
+
+            output = "".join(chunks).strip()
+            if output:
+                return output
+            if result_val is not None:
+                return json.dumps(result_val) if not isinstance(result_val, str) else result_val
+
+            return ""
+
     try:
         session = code_session(REGION)
         if hasattr(session, "__enter__"):
             with session as client:
-                response = client.invoke(
-                    "executeCode",
-                    {"code": code, "language": "python", "clearContext": True},
-                )
+                output = _consume_stream(client)
         else:
-            response = session.invoke(
-                "executeCode",
-                {"code": code, "language": "python", "clearContext": True},
-            )
+            output = _consume_stream(session)
 
-        stdout_chunks = []
-        result_payload = None
-
-        for event in response:
-            if isinstance(event, dict):
-                # Standard event format
-                if "result" in event and event["result"] is not None:
-                    result_payload = event["result"]
-                if "stdout" in event and event["stdout"]:
-                    stdout_chunks.append(str(event["stdout"]))
-
-                # Nested event wrapper format
-                if "event" in event and isinstance(event["event"], dict):
-                    inner = event["event"]
-                    if "result" in inner and inner["result"] is not None:
-                        result_payload = inner["result"]
-                    if "stdout" in inner and inner["stdout"]:
-                        stdout_chunks.append(str(inner["stdout"]))
-            elif isinstance(event, str):
-                stdout_chunks.append(event)
-
-        if stdout_chunks:
-            return "".join(stdout_chunks).strip()
-
-        if result_payload is not None:
-            return json.dumps(result_payload) if not isinstance(result_payload, str) else result_payload
-
-        # If sandbox produced no stdout or result payload, trigger the calculated fallback
+        if output:
+            return output
         raise RuntimeError("Code Interpreter returned empty output")
 
     except Exception as e:
@@ -419,10 +421,9 @@ print(json.dumps(result))
             "tier_discount": tier_discount,
             "total_savings": total_savings,
             "points_earned": points_earned,
-            "fallback": True,
         })
 
-# ── TODO 8 — Agent Entrypoint ─────────────────────────────────────────────────
+# ── 8 — Agent Entrypoint ─────────────────────────────────────────────────
 @app.entrypoint
 async def invoke(payload, context=None):
     """
