@@ -367,16 +367,26 @@ print(json.dumps(result))
         logger.warning(f"Code Interpreter execution failed, running fallback: {e}")
         tier_rates = {"Silver": 0.00, "Gold": 0.10, "Platinum": 0.15}
         tier_rate = tier_rates.get(tier, 0.0)
-        tier_discount = round(order_total * tier_rate, 2)
-        final_total = round(order_total - tier_discount, 2)
+        
+        max_points_for_half_order = int((order_total * 0.5) * 100)
+        eligible_points = (loyalty_points // 500) * 500
+        points_redeemed = min(eligible_points, (max_points_for_half_order // 500) * 500)
+        points_discount = points_redeemed / 100.0
+        subtotal_after_points = max(0.0, order_total - points_discount)
+        tier_discount = round(subtotal_after_points * tier_rate, 2)
+        final_total = round(subtotal_after_points - tier_discount, 2)
+        remaining_points = loyalty_points - points_redeemed
+        
         return json.dumps({
-            "points_redeemed": 0,
+            "points_redeemed": points_redeemed,
             "tier_discount_pct": int(tier_rate * 100),
             "final_total": final_total,
-            "remaining_points": loyalty_points,
+            "remaining_points": remaining_points,
+            "points_discount": points_discount,
+            "tier_discount": tier_discount,
+            "total_savings": round(points_discount + tier_discount, 2),
             "fallback": True,
         })
-
 
 # ── TODO 8 — Agent Entrypoint ─────────────────────────────────────────────────
 @app.entrypoint
