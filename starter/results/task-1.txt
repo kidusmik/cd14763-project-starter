@@ -1,0 +1,19 @@
+Prompt: Can you track order ORD-001?
+
+╭───────────────────────────────────────────────────── cs_support_agent ──────────────────────────────────────────────────────╮│ Session: eb745b31-cf49-4a59-a3fc-4ddb90af9eb4                                                                               ││ Request ID: 625c21a5-7601-4e17-b4a4-779128840121                                                                            ││ ARN: arn:aws:bedrock-agentcore:us-east-1:080865229624:runtime/cs_support_agent-Ax9Pdo9nxD                                   ││ Logs: aws logs tail /aws/bedrock-agentcore/runtimes/cs_support_agent-Ax9Pdo9nxD-DEFAULT --log-stream-name-prefix            ││ "2026/09/18/[runtime-logs]" --follow                                                                                        ││       aws logs tail /aws/bedrock-agentcore/runtimes/cs_support_agent-Ax9Pdo9nxD-DEFAULT --log-stream-name-prefix            ││ "2026/09/18/[runtime-logs]" --since 1h                                                                                      ││ GenAI Dashboard: https://console.aws.amazon.com/cloudwatch/home?region=us-east-1#gen-ai-observability/agent-core            │╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+Response:
+I found the tracking information for order ORD-001:
+
+**Order Status:** SHIPPED
+**Customer ID:** CUST-123
+**Items:** 
+- Wireless Headphones Pro (1 x $89.99)
+
+**Shipping Details:**
+- Carrier: UPS
+- Tracking Number: TRK987654321
+- Estimated Delivery: September 20, 2026
+- Total: $89.99
+
+The order has already been shipped and is on its way to you! You can track the package using the tracking number TRK987654321 
+with UPS.

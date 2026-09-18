@@ -1,0 +1,21 @@
+What are the benefits of the Platinum loyalty tier?
+
+
+╭───────────────────────────────────────────────────── cs_support_agent ──────────────────────────────────────────────────────╮│ Session: eb745b31-cf49-4a59-a3fc-4ddb90af9eb4                                                                               ││ Request ID: bed01f53-4726-4d72-8b4a-99710c2e91f5                                                                            ││ ARN: arn:aws:bedrock-agentcore:us-east-1:080865229624:runtime/cs_support_agent-Ax9Pdo9nxD                                   ││ Logs: aws logs tail /aws/bedrock-agentcore/runtimes/cs_support_agent-Ax9Pdo9nxD-DEFAULT --log-stream-name-prefix            ││ "2026/09/18/[runtime-logs]" --follow                                                                                        ││       aws logs tail /aws/bedrock-agentcore/runtimes/cs_support_agent-Ax9Pdo9nxD-DEFAULT --log-stream-name-prefix            ││ "2026/09/18/[runtime-logs]" --since 1h                                                                                      ││ GenAI Dashboard: https://console.aws.amazon.com/cloudwatch/home?region=us-east-1#gen-ai-observability/agent-core            │╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+Response:
+### Platinum Loyalty Tier Benefits
+
+Based on the loyalty program information, the **Platinum tier** (5000 or more points) offers these exclusive benefits:
+
+**Platinum Tier Benefits:**
+- **Free same-day shipping** on eligible orders
+- **15% discount** on purchases (higher than Gold tier's 10% discount)
+- **Priority customer support** - get faster assistance when you need help
+
+These benefits are in addition to the standard loyalty program features that apply to all tiers, such as:
+- Earning points when you shop (1 point per $1 spent on standard items, 2 points per $1 on Amazon devices, 5 points per $1 on 
+Amazon Fresh)
+- Redeeming points for discounts (100 points = $1 discount, minimum 500 points to redeem)
+- Points validity for 2 years from the date earned
+
+Your Platinum status gives you the highest level of benefits in our loyalty program!

@@ -1,0 +1,14 @@
+I am Jane. I prefer concise responses.
+
+
+╭───────────────────────────────────────────────────── cs_support_agent ──────────────────────────────────────────────────────╮│ Session: eb745b31-cf49-4a59-a3fc-4ddb90af9eb4                                                                               ││ Request ID: 908ec757-b0d3-4610-8e82-40e00365cdd2                                                                            ││ ARN: arn:aws:bedrock-agentcore:us-east-1:080865229624:runtime/cs_support_agent-Ax9Pdo9nxD                                   ││ Logs: aws logs tail /aws/bedrock-agentcore/runtimes/cs_support_agent-Ax9Pdo9nxD-DEFAULT --log-stream-name-prefix            ││ "2026/09/18/[runtime-logs]" --follow                                                                                        ││       aws logs tail /aws/bedrock-agentcore/runtimes/cs_support_agent-Ax9Pdo9nxD-DEFAULT --log-stream-name-prefix            ││ "2026/09/18/[runtime-logs]" --since 1h                                                                                      ││ GenAI Dashboard: https://console.aws.amazon.com/cloudwatch/home?region=us-east-1#gen-ai-observability/agent-core            │╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+Response:
+Hello Jane. Here’s your concise update:
+
+- **Order ORD-001** (Wireless Headphones Pro): **Shipped via UPS** (TRK987654321), estimated delivery **Sep 20, 2026**.
+- **Order ORD-002** (Kindle Paperwhite): **Delivered Sep 15, 2026**.
+- **Refund (REF-GJN54IUK)** for ORD-002: **Processing**, expected in **2-3 business days**.
+
+As a **Platinum loyalty member**, your recent order qualifies for enhanced benefits. Would you like details on your specific 
+Platinum tier perks or an estimated discount on a future purchase?
+(csai) PS C:\Users\kidus\Documents\VSCodeProjects\cd14763-project-starter\starter> 
