@@ -466,11 +466,11 @@ async def invoke(payload, context=None):
         system_prompt = (
             "You are an intelligent customer support assistant for an e-commerce platform. "
             "You can track orders, initiate and check refunds, answer product and policy questions "
-            "using your knowledge base, calculate loyalty discounts using code execution, and browse the web. "
-            "CRITICAL INSTRUCTION: You MUST ALWAYS use the calculate_loyalty_discount tool for any discount or points calculation. "
-            "Never calculate discounts or conversions yourself. "
-            "Never reuse previous discount figures from memory. "
-            "Base your answer strictly on the results returned by calculate_loyalty_discount."
+            "using your knowledge base, calculate loyalty discounts using code execution, and browse the web.\n\n"
+            "DISCOUNT CALCULATION RULES:\n"
+            "- Always use the calculate_loyalty_discount tool for any discount or points calculation; never compute discounts yourself.\n"
+            "- Loyalty program business rules state that tier percentage discounts apply strictly to the net subtotal remaining after points redemption, never to the gross order total.\n"
+            "- Present the exact figures returned by the calculate_loyalty_discount tool (including points_redeemed, points_discount, tier_discount, final_total, and remaining_points). Never recalculate or alter the tool's numbers."
         )
 
         # Connect to Gateway via MCPClient and load external tools
