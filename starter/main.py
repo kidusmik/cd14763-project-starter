@@ -26,6 +26,13 @@ from strands.tools.mcp.mcp_client import MCPClient
 from mcp.client.streamable_http import streamable_http_client
 import argparse, json
 import os, asyncio, boto3
+
+# Patch Python 3.14 shutdown_default_executor bug with nest_asyncio
+async def _safe_shutdown_default_executor(self, timeout=None):
+    pass
+
+asyncio.BaseEventLoop.shutdown_default_executor = _safe_shutdown_default_executor
+
 from strands.hooks import (
     HookProvider, AfterInvocationEvent, HookRegistry, MessageAddedEvent,
 )
