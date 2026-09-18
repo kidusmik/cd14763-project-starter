@@ -338,57 +338,61 @@ points_earned = int(final_total * earn_rate)
 result = {{
     "points_redeemed": points_redeemed,
     "tier_discount_pct": int(tier_rate * 100),
-    "subtotal_after_points": subtotal_after_points,
-    "tier_discount": tier_discount,
     "final_total": final_total,
     "remaining_points": remaining_points,
     "points_discount": points_discount,
+    "subtotal_after_points": subtotal_after_points,
+    "tier_discount": tier_discount,
     "total_savings": total_savings,
     "points_earned": points_earned,
-    "calculation_breakdown": (
-        f"Original order: ${order_total:.2f}. "
-        f"Redeemed {points_redeemed} points for a ${points_discount:.2f} discount. "
-        f"Subtotal after points: ${subtotal_after_points:.2f}. "
-        f"Gold tier discount (10% applied to remaining ${subtotal_after_points:.2f}): ${tier_discount:.2f}. "
-        f"Final total: ${final_total:.2f}. Remaining points: {remaining_points}."
-    )
+    "note": "Tier discount applies strictly to the subtotal remaining after points redemption."
 }}
 print(json.dumps(result))
 """
 
     def _consume_stream(client):
-            response = client.invoke(
-                "executeCode",
-                {"code": code, "language": "python", "clearContext": True},
-            )
-            # Extract the actual EventStream from the response dictionary
-            stream = response.get("stream", response) if isinstance(response, dict) else response
+        response = client.invoke(
+            "executeCode",
+            {"code": code, "language": "python", "clearContext": True},
+        )
+        stream = response.get("stream", response) if isinstance(response, dict) else response
 
-            chunks = []
-            result_val = None
+        chunks = []
+        result_val = None
 
-            for event in stream:
-                if isinstance(event, dict):
-                    if event.get("result") is not None:
-                        result_val = event["result"]
-                    if event.get("stdout"):
-                        chunks.append(str(event["stdout"]))
-                    if "event" in event and isinstance(event["event"], dict):
-                        inner = event["event"]
-                        if inner.get("result") is not None:
-                            result_val = inner["result"]
-                        if inner.get("stdout"):
-                            chunks.append(str(inner["stdout"]))
-                elif isinstance(event, str):
-                    chunks.append(event)
+        for event in stream:
+            if isinstance(event, dict):
+                if event.get("result") is not None:
+                    result_val = event["result"]
+                if event.get("stdout"):
+                    chunks.append(str(event["stdout"]))
+                if "event" in event and isinstance(event["event"], dict):
+                    inner = event["event"]
+                    if inner.get("result") is not None:
+                        result_val = inner["result"]
+                    if inner.get("stdout"):
+                        chunks.append(str(inner["stdout"]))
+            elif isinstance(event, str):
+                chunks.append(event)
 
-            output = "".join(chunks).strip()
-            if output:
-                return output
-            if result_val is not None:
-                return json.dumps(result_val) if not isinstance(result_val, str) else result_val
+        output = "".join(chunks).strip()
+        if output:
+            return output
 
-            return ""
+        # Unwrap standard sandbox wrapper dictionary to return pure JSON
+        if result_val is not None:
+            if isinstance(result_val, dict):
+                structured = result_val.get("structuredContent")
+                if isinstance(structured, dict) and structured.get("stdout"):
+                    return structured["stdout"].strip()
+                content = result_val.get("content")
+                if isinstance(content, list) and len(content) > 0:
+                    first = content[0]
+                    if isinstance(first, dict) and first.get("text"):
+                        return first["text"].strip()
+            return json.dumps(result_val) if not isinstance(result_val, str) else result_val
+
+        return ""
 
     try:
         session = code_session(REGION)
@@ -422,14 +426,15 @@ print(json.dumps(result))
 
         return json.dumps({
             "points_redeemed": points_redeemed,
-            "subtotal_after_points": subtotal_after_points,
             "tier_discount_pct": int(tier_rate * 100),
             "final_total": final_total,
             "remaining_points": remaining_points,
             "points_discount": points_discount,
+            "subtotal_after_points": subtotal_after_points,
             "tier_discount": tier_discount,
             "total_savings": total_savings,
             "points_earned": points_earned,
+            "note": "Tier discount applies strictly to the subtotal remaining after points redemption.",
         })
 
 # ── 8 — Agent Entrypoint ─────────────────────────────────────────────────
