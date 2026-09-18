@@ -1,0 +1,62 @@
+default_agent: cs_support_agent
+agents:
+  cs_support_agent:
+    name: cs_support_agent
+    language: python
+    node_version: '20'
+    entrypoint: C:/Users/kidus/Documents/VSCodeProjects/cd14763-project-starter/starter/main.py
+    deployment_type: container
+    runtime_type: null
+    platform: linux/arm64
+    container_runtime: none
+    source_path: C:\Users\kidus\Documents\VSCodeProjects\cd14763-project-starter\starter
+    aws:
+      execution_role: arn:aws:iam::080865229624:role/AmazonBedrockAgentCoreSDKRuntime-us-east-1-50dd5f9114
+      execution_role_auto_create: false
+      account: 080865229624
+      region: us-east-1
+      ecr_repository: 080865229624.dkr.ecr.us-east-1.amazonaws.com/bedrock-agentcore-cs_support_agent
+      ecr_auto_create: false
+      s3_path: null
+      s3_auto_create: false
+      network_configuration:
+        network_mode: PUBLIC
+        network_mode_config: null
+      protocol_configuration:
+        server_protocol: HTTP
+      observability:
+        enabled: true
+      lifecycle_configuration:
+        idle_runtime_session_timeout: null
+        max_lifetime: null
+    bedrock_agentcore:
+      agent_id: cs_support_agent-Ax9Pdo9nxD
+      agent_arn: arn:aws:bedrock-agentcore:us-east-1:080865229624:runtime/cs_support_agent-Ax9Pdo9nxD
+      agent_session_id: eb745b31-cf49-4a59-a3fc-4ddb90af9eb4
+    codebuild:
+      project_name: bedrock-agentcore-cs_support_agent-builder
+      execution_role: arn:aws:iam::080865229624:role/AmazonBedrockAgentCoreSDKCodeBuild-us-east-1-50dd5f9114
+      source_bucket: bedrock-agentcore-codebuild-sources-080865229624-us-east-1
+    memory:
+      mode: STM_AND_LTM
+      memory_id: CustomerSupportMemory-PJ9jfsE0u9
+      memory_arn: null
+      memory_name: cs_support_agent_memory
+      event_expiry_days: 30
+      first_invoke_memory_check_done: false
+      was_created_by_toolkit: false
+    identity:
+      credential_providers: []
+      workload: null
+    aws_jwt:
+      enabled: false
+      audiences: []
+      signing_algorithm: ES384
+      issuer_url: null
+      duration_seconds: 300
+    authorizer_configuration: null
+    request_header_configuration: null
+    oauth_configuration: null
+    api_key_env_var_name: null
+    api_key_credential_provider_name: null
+    is_generated_by_agentcore_create: false
