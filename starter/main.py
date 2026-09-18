@@ -338,12 +338,20 @@ points_earned = int(final_total * earn_rate)
 result = {{
     "points_redeemed": points_redeemed,
     "tier_discount_pct": int(tier_rate * 100),
+    "subtotal_after_points": subtotal_after_points,
+    "tier_discount": tier_discount,
     "final_total": final_total,
     "remaining_points": remaining_points,
     "points_discount": points_discount,
-    "tier_discount": tier_discount,
     "total_savings": total_savings,
-    "points_earned": points_earned
+    "points_earned": points_earned,
+    "calculation_breakdown": (
+        f"Original order: ${order_total:.2f}. "
+        f"Redeemed {points_redeemed} points for a ${points_discount:.2f} discount. "
+        f"Subtotal after points: ${subtotal_after_points:.2f}. "
+        f"Gold tier discount (10% applied to remaining ${subtotal_after_points:.2f}): ${tier_discount:.2f}. "
+        f"Final total: ${final_total:.2f}. Remaining points: {remaining_points}."
+    )
 }}
 print(json.dumps(result))
 """
@@ -414,6 +422,7 @@ print(json.dumps(result))
 
         return json.dumps({
             "points_redeemed": points_redeemed,
+            "subtotal_after_points": subtotal_after_points,
             "tier_discount_pct": int(tier_rate * 100),
             "final_total": final_total,
             "remaining_points": remaining_points,
