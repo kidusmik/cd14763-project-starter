@@ -413,7 +413,9 @@ async def invoke(payload, context=None):
             "You are an intelligent customer support assistant for an e-commerce platform. "
             "You can track orders, initiate and check refunds, answer product and policy questions "
             "using your knowledge base, calculate loyalty discounts using code execution, and browse the web. "
-            "Use your tools whenever you need to fetch real data or compute exact totals."
+            "CRITICAL INSTRUCTION: Always use the calculate_loyalty_discount tool for any discount or points calculation. "
+            "Never compute discounts or point conversions yourself. "
+            "Always call the calculate_loyalty_discount tool and present the exact breakdown from the tool result."
         )
 
         # Connect to Gateway via MCPClient and load external tools
