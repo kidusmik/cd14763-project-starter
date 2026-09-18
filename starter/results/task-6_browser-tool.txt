@@ -1,0 +1,8 @@
+Prompt: Go to https://www.udacity.com and tell me the page title.
+
+
+╭───────────────────────────────────────────────────── cs_support_agent ──────────────────────────────────────────────────────╮│ Session: 150ea440-19e6-44ac-9a4c-4eeb80aaf83d                                                                               ││ Request ID: f986d3ca-f557-423d-a99f-266883b2c8d9                                                                            ││ ARN: arn:aws:bedrock-agentcore:us-east-1:080865229624:runtime/cs_support_agent-Ax9Pdo9nxD                                   ││ Logs: aws logs tail /aws/bedrock-agentcore/runtimes/cs_support_agent-Ax9Pdo9nxD-DEFAULT --log-stream-name-prefix            ││ "2026/09/18/[runtime-logs]" --follow                                                                                        ││       aws logs tail /aws/bedrock-agentcore/runtimes/cs_support_agent-Ax9Pdo9nxD-DEFAULT --log-stream-name-prefix            ││ "2026/09/18/[runtime-logs]" --since 1h                                                                                      ││ GenAI Dashboard: https://console.aws.amazon.com/cloudwatch/home?region=us-east-1#gen-ai-observability/agent-core            │╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+Response:
+The page title of https://www.udacity.com is:
+
+**"Learn the Latest Tech Skills; Advance Your Career | Udacity"**
