@@ -362,15 +362,35 @@ print(json.dumps(result))
                 {"code": code, "language": "python", "clearContext": True},
             )
 
+        stdout_chunks = []
+        result_payload = None
+
         for event in response:
             if isinstance(event, dict):
-                if "result" in event:
-                    return json.dumps(event["result"]) if not isinstance(event["result"], str) else event["result"]
-                if "stdout" in event:
-                    return event["stdout"].strip()
-            return json.dumps(event)
+                # Standard event format
+                if "result" in event and event["result"] is not None:
+                    result_payload = event["result"]
+                if "stdout" in event and event["stdout"]:
+                    stdout_chunks.append(str(event["stdout"]))
 
-        return json.dumps({"status": "completed"})
+                # Nested event wrapper format
+                if "event" in event and isinstance(event["event"], dict):
+                    inner = event["event"]
+                    if "result" in inner and inner["result"] is not None:
+                        result_payload = inner["result"]
+                    if "stdout" in inner and inner["stdout"]:
+                        stdout_chunks.append(str(inner["stdout"]))
+            elif isinstance(event, str):
+                stdout_chunks.append(event)
+
+        if stdout_chunks:
+            return "".join(stdout_chunks).strip()
+
+        if result_payload is not None:
+            return json.dumps(result_payload) if not isinstance(result_payload, str) else result_payload
+
+        # If sandbox produced no stdout or result payload, trigger the calculated fallback
+        raise RuntimeError("Code Interpreter returned empty output")
 
     except Exception as e:
         logger.warning(f"Code Interpreter execution failed, running fallback: {e}")
