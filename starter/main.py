@@ -138,6 +138,10 @@ class MemoryHook(HookProvider):
         if is_tool_result or not user_query:
             return
 
+        # Do not inject old memory on discount calculations so the model must use the tool
+        if any(keyword in user_query.lower() for keyword in ["discount", "calculate", "loyalty points"]):
+            return
+
         # Query all strategy namespaces
         all_memories = []
         for strategy_type, template in self.namespaces.items():
